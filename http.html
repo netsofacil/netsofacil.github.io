@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Protocolo HTTP na Prática</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Página Inicial</a> |
+        <a href="historia_web.html">História da Web</a> |
+        <a href="http.html">HTTP</a> |
+        <a href="http.html">Estados</a> |
+        <a href="curriculo.html">Currículo</a> |
+        <a href="contato.html">Contato</a>
+    </nav>
+    <hr>
+
+    <h1>O Papel do HTTP</h1>
+    <p>O HTTP (Hypertext Transfer Protocol) é o protocolo fundamental da Web. Ele atua como um mensageiro estabelecendo as regras de como os navegadores (clientes) devem pedir documentos e como os servidores devem devolvê-los. Sem ele, a transferência de páginas HTML, imagens e vídeos na Web não seria padronizada.</p>
+
+    <h2>Comunicação: Cliente, Servidor, Requisição e Resposta</h2>
+    <p>A Web funciona num modelo <strong>Cliente-Servidor</strong>. O <em>Cliente</em> (seu navegador) inicia a comunicação enviando uma <strong>Requisição</strong> (pedido) pela rede. O <em>Servidor</em> (computador remoto onde o site está hospedado) recebe essa requisição, processa os dados e envia de volta uma <strong>Resposta</strong>, que contém o recurso solicitado ou uma mensagem de erro.</p>
+
+    <h2>Métodos GET e POST</h2>
+    <ul>
+        <li><strong>GET:</strong> Solicita a representação de um recurso específico (como ler uma página). Os dados enviados vão anexados diretamente na URL. Deve ser usado apenas para buscar dados.</li>
+        <li><strong>POST:</strong> Envia dados ao servidor para processamento (como enviar um formulário de login). Os dados vão ocultos no corpo da requisição, proporcionando maior segurança.</li>
+    </ul>
+
+    <h2>Exemplo de Requisição HTTP</h2>
+    <pre>
+GET /contato.html HTTP/1.1
+Host: www.site-exemplo.com.br
+User-Agent: Mozilla/5.0
+Accept-Language: pt-BR
+    </pre>
+
+    <h2>Exemplo de Resposta HTTP</h2>
+    <pre>
+HTTP/1.1 200 OK
+Date: Mon, 29 Jun 2026 14:00:00 GMT
+Content-Type: text/html
+Content-Length: 1045
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+...
+&lt;/html&gt;
+    </pre>
+
+    <h2>Principais Códigos de Status HTTP</h2>
+    <p>Os servidores respondem com códigos padronizados para indicar o resultado da requisição:</p>
+    <ul>
+        <li><strong>200 OK:</strong> A requisição foi bem-sucedida e o recurso foi entregue.</li>
+        <li><strong>301 Moved Permanently (ou 302 Found):</strong> O recurso mudou de lugar e o servidor está redirecionando o cliente para a nova URL.</li>
+        <li><strong>400 Bad Request:</strong> O servidor não entendeu a requisição do cliente devido a uma sintaxe inválida.</li>
+        <li><strong>403 Forbidden:</strong> O cliente foi autenticado, mas não tem permissão para acessar o recurso solicitado.</li>
+        <li><strong>404 Not Found:</strong> O servidor não conseguiu encontrar o recurso solicitado na URL especificada.</li>
+        <li><strong>500 Internal Server Error:</strong> Ocorreu um erro inesperado no lado do servidor ao processar o pedido.</li>
+    </ul>
+</body>
+</html>

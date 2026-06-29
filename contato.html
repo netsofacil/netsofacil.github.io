@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Contato</title>
+</head>
+<body>
+    <nav>
+        <a href="curriculo.html">Voltar para o Currículo</a> |
+        <a href="index.html">Ir para Página Inicial</a>
+    </nav>
+    <hr>
+
+    <h1>Formulário de Contato</h1>
+    <p><strong>Instruções:</strong> Por favor, preencha o formulário abaixo para enviar sua mensagem. Certifique-se de preencher todos os campos de preenchimento obrigatório antes de enviar.</p>
+
+    <form action="#" method="POST">
+        <div>
+            <label id="label-nome" for="nome">Nome Completo:</label><br>
+            <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+        </div>
+        <br>
+        
+        <div>
+            <label id="label-email" for="email">E-mail para retorno:</label><br>
+            <input type="email" id="email" name="email" placeholder="seuemail@provedor.com" required>
+        </div>
+        <br>
+        
+        <div>
+            <label id="label-assunto" for="assunto">Assunto da Mensagem:</label><br>
+            <input type="text" id="assunto" name="assunto" placeholder="Ex: Dúvida sobre o currículo">
+        </div>
+        <br>
+        
+        <div>
+            <label id="label-estado" for="estado">Selecione seu Estado:</label><br>
+            <select id="estado" name="estado">
+                <option value="">-- Escolha um Estado --</option>
+                <option value="SC">Santa Catarina</option>
+                <option value="PR">Paraná</option>
+                <option value="RS">Rio Grande do Sul</option>
+                <option value="SP">São Paulo</option>
+                <option value="RJ">Rio de Janeiro</option>
+                <option value="MG">Minas Gerais</option>
+            </select>
+        </div>
+        <br>
+        
+        <div>
+            <label id="label-mensagem" for="mensagem">Mensagem:</label><br>
+            <textarea id="mensagem" name="mensagem" rows="6" cols="50" placeholder="Escreva o conteúdo da sua mensagem aqui..."></textarea>
+        </div>
+        <br>
+        
+        <div>
+            <button type="submit">Enviar Formulário</button>
+        </div>
+    </form>
+</body>
+</html>
