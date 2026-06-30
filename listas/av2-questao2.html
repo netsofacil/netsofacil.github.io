@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronometro</title>
+    <style>
+       .cronometro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            max-width: fit-content;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .cronometro p {
+            font-size: 2rem;
+        }
+
+        .cronometro button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .lista-pausas {
+            margin-top: 20px;
+            max-width: fit-content;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 1.5rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../index.html">Página Inicial</a> |
+        <a href="../historia_web.html">História da Web</a> |
+        <a href="../http.html">HTTP</a> |
+        <a href="../http.html">Estados</a> |
+        <a href="../curriculo.html">Currículo</a> |
+        <a href="../contato.html">Contato</a> |
+        <a href="../listas.html">Listas de Exercícios</a>
+    </nav>
+    <hr>
+
+    <div>
+        <a href="/listas/avaliacao2.html">←Voltar para Avaliação 2</a>
+    </div>
+
+    <div id="container" class="container">
+        
+        <h1>Cronômetro</h1>
+        <div id="cronometro" class="cronometro">
+            <p id="tempo">00:00:00</p>
+            <div class="action-bar">
+                <button id="iniciar">Iniciar</button>
+                <button id="pausar">Pausar</button>
+                <button id="marcar">Marcar</button>
+                <button id="resetar">Resetar</button>
+            </div>
+        </div>
+        <div id="listaPausas" class="pausas">
+
+        </div>
+        
+    </div>
+    <script>
+        let startTime = 0;
+        let elapsedTime = 0;
+        let timerInterval = null;
+
+        const tempoElement = document.getElementById('tempo');
+        const iniciarButton = document.getElementById('iniciar');
+        const pausarButton = document.getElementById('pausar');
+        const resetarButton = document.getElementById('resetar');
+        const marcarButton = document.getElementById('marcar');
+
+        function updateDisplay() {
+            const hours = Math.floor(elapsedTime / 3600);
+            const minutes = Math.floor((elapsedTime % 3600) / 60);
+            const seconds = elapsedTime % 60;
+
+            tempoElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!timerInterval) {
+                iniciarButton.textContent = 'Continuar';
+                iniciarButton.disabled = true;
+                startTime = Date.now() - elapsedTime * 1000;
+                timerInterval = setInterval(() => {
+                    elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+                    updateDisplay();
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            if (timerInterval) {
+                iniciarButton.disabled = false;
+                clearInterval(timerInterval);
+                timerInterval = null;
+                addPauseToList();
+            }
+
+        }
+        function addPauseToList() {
+            const listaPausas = document.getElementById('listaPausas');
+            const pauseItem = document.createElement('p');
+            pauseItem.textContent = `Pausa em: ${tempoElement.textContent}`;
+            listaPausas.appendChild(pauseItem);
+        }
+
+        function addMarkToList() {
+            const listaPausas = document.getElementById('listaPausas');
+            const markItem = document.createElement('p');
+            markItem.textContent = `Marca em: ${tempoElement.textContent}`;
+            listaPausas.appendChild(markItem);
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            elapsedTime = 0;
+            updateDisplay();
+            listaPausas.innerHTML = '';
+            iniciarButton.textContent = 'Iniciar';
+            iniciarButton.disabled = false;
+        }
+
+        iniciarButton.addEventListener('click', startTimer);
+        pausarButton.addEventListener('click', pauseTimer);
+        resetarButton.addEventListener('click', resetTimer);
+        marcarButton.addEventListener('click', addMarkToList);
+    </script>
+</body>
+</html>

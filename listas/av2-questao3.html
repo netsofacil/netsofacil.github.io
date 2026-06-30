@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloco de notas</title>
+    
+    <style>
+       .container {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px auto;
+        }
+
+        .bloco {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .nota-nome {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
+            font-size: 1rem;
+        }
+        
+        .nota-conteudo {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
+            font-size: 1rem;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .button.button-success {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .button.button-danger {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .nota-salva {
+            width: 80%;
+            cursor: pointer;
+            margin: 5px 0;
+            padding: 1rem;
+            border: 1px solid black;
+        }
+
+        .notas-lista {
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .lista-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: auto;
+        }
+
+        #deletarTodas {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../index.html">Página Inicial</a> |
+        <a href="../historia_web.html">História da Web</a> |
+        <a href="../http.html">HTTP</a> |
+        <a href="../http.html">Estados</a> |
+        <a href="../curriculo.html">Currículo</a> |
+        <a href="../contato.html">Contato</a> |
+        <a href="../listas.html">Listas de Exercícios</a>
+    </nav>
+    <hr>
+
+    <div>
+        <a href="/listas/avaliacao2.html">←Voltar para Avaliação 2</a>
+    </div>
+    <h1>Bloco de Notas</h1>
+    <div id="container" class="container">
+        <div id="lista" class="notas-lista">
+            <div class="lista-actions">
+                <button id="nova" class="button button-success">Nova Nota</button>
+                <button id="deletarTodas" class="button button-danger">Limpar Todas</button>
+            </div>
+        </div>
+        
+        
+        
+        <div class="bloco">
+            <input type="text" class="nota-nome" id="nomeNota" placeholder="Nome da nota">
+            <textarea id="notepad" class="nota-conteudo" rows="20" cols="80" placeholder="Digite aqui..." data-index=""></textarea>
+            <div class="action-bar">
+                <button id="salvar" class="button button-success">Salvar</button>
+                <button id="limpar" class="button button-danger">Limpar</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const notepad = document.getElementById('notepad');
+        const salvarButton = document.getElementById('salvar');
+        const limparButton = document.getElementById('limpar');
+        const listaNotas = document.getElementById('lista');
+        let notas = [];
+
+        // Carregar as notas do localStorage ao carregar a página
+        function loadNotes() {
+            listaNotas.querySelectorAll('.nota-salva').forEach(n => n.remove()); // Remove notas antigas
+            let notasSalvas = JSON.parse(localStorage.getItem('notas')) || [];
+            notas = notasSalvas;
+           
+            notas.forEach((nota, index) => {
+                const notaDiv = document.createElement('div');
+                notaDiv.classList.add('nota-salva');
+                notaDiv.dataset.index = index; // Armazena o índice da nota
+                notaDiv.textContent = nota.name;
+                
+                listaNotas.insertAdjacentElement('afterbegin', notaDiv);
+            });
+        }
+
+        window.addEventListener('load', () => {
+            loadNotes();
+        });
+        
+        //Salva ou adiciona nota
+        salvarButton.addEventListener('click', () => {
+            const notaNome = document.getElementById('nomeNota').value.trim();
+            const notaConteudo = notepad.value.trim();
+            const notaId = notepad.dataset.index;
+
+            if (notaNome && notaConteudo) {
+                
+
+                if (notaId) {
+                    // Atualizar nota existente
+                    notas[notaId] = { name: notaNome, content: notaConteudo };
+                } else {
+                    // Adicionar nova nota
+                    notas.push({ name: notaNome, content: notaConteudo });
+                    notepad.dataset.index = notas.length - 1; // Atualiza o índice da nota atual
+                }
+                
+                localStorage.setItem('notas', JSON.stringify(notas));
+                loadNotes(); // Recarrega a lista de notas
+            } else {
+                alert('Por favor, preencha o nome e o conteúdo da nota.');
+            }
+        });
+        
+
+        //Carrega nota ao clicar em alguma
+        listaNotas.addEventListener('click', (event) => {
+            if (event.target.classList.contains('nota-salva')) {
+                const index = event.target.dataset.index;
+                const nota = notas[index];
+                console.log('Nota clicada:', nota);
+                document.getElementById('nomeNota').value = nota.name;
+                notepad.value = nota.content;
+                notepad.dataset.index = index; // Atualiza o índice da nota atual
+            }
+        });
+        
+
+        //Limpar todas as notas
+        document.getElementById('deletarTodas').addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja deletar todas as notas?')) {
+                localStorage.removeItem('notas');
+                location.reload(); // Recarrega a página para atualizar a lista de notas
+            }
+        });
+
+        //Nova nota
+        document.getElementById('nova').addEventListener('click', () => {
+            document.getElementById('nomeNota').value = '';
+            notepad.value = '';
+            notepad.dataset.index = ''; // Limpa o índice da nota atual
+        });
+
+    </script>
+</body>
+</html>
