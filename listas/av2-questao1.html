@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação 2</title>
+    <style>
+        .calculadora {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 10px;
+            max-width: fit-content;
+            margin: 20px auto;
+            grid-template-areas: 
+                "visor visor visor visor"
+                "plus minus mult divide"
+                "sete oito nove equal"
+                "quatro cinco seis equal"
+                "um dois tres equal"
+                "zero dot C equal";
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 1.5rem;
+            font-size: 2rem;
+        }
+        .calculadora-visor {
+            grid-column: span 4;
+            background-color: #f0f0f0;
+            text-align: right;
+            padding: 5px;
+            font-size: 1.2em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: auto;
+            word-break: break-all;
+        }
+
+        .botao {
+            padding: 20%;
+            border: 1px solid #ccc;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+            align-content: center;
+            justify-content: center;
+        }
+        
+        .botao.botao-operador {
+            background-color: gray;
+        }
+        .botao.botao-simples {
+            /* background-color: green; */
+        }
+        .botao.botao-equal {
+            background-color: #007BFF;
+        }
+
+        #botao-equal {grid-area: equal;}
+        #visor {grid-area: visor;}
+        #botao-plus { grid-area: plus; }
+        #botao-minus { grid-area: minus; }
+        #botao-multiply { grid-area: mult; }
+        #botao-divide { grid-area: divide; }
+        #botao-7 { grid-area: sete; }
+        #botao-8 { grid-area: oito; }
+        #botao-9 { grid-area: nove; }
+        #botao-4 { grid-area: quatro; }
+        #botao-5 { grid-area: cinco; }
+        #botao-6 { grid-area: seis; }
+        #botao-1 { grid-area: um; }
+        #botao-2 { grid-area: dois; }
+        #botao-3 { grid-area: tres; }
+        #botao-0 { grid-area: zero; }
+        #botao-dot { grid-area: dot; }
+        #botao-clear { grid-area: C; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../index.html">Página Inicial</a> |
+        <a href="../historia_web.html">História da Web</a> |
+        <a href="../http.html">HTTP</a> |
+        <a href="../http.html">Estados</a> |
+        <a href="../curriculo.html">Currículo</a> |
+        <a href="../contato.html">Contato</a> |
+        <a href="../listas.html">Listas de Exercícios</a>
+    </nav>
+    <hr>
+    <div>
+        <a href="/listas/avaliacao2.html">←Voltar para Avaliação 2</a>
+    </div>
+    <form action="#" onsubmit="calculate(event)">
+        <div id="calculadora" class="calculadora">
+            <textarea type="text" id="visor" class="calculadora-visor" onkeypress="handletext(event)"></textarea>
+            <div id="botao-plus" class="botao botao-operador" onclick="escreve('+')">+</div>
+            <div id="botao-minus" class="botao botao-operador" onclick="escreve('-')">-</div>
+            <div id="botao-multiply" class="botao botao-operador" onclick="escreve('*')">*</div>
+            <div id="botao-divide" class="botao botao-operador" onclick="escreve('/')">/</div>
+            <div id="botao-7" class="botao botao-simples" onclick="escreve('7')">7</div>
+            <div id="botao-8" class="botao botao-simples" onclick="escreve('8')">8</div>
+            <div id="botao-9" class="botao botao-simples" onclick="escreve('9')">9</div>
+            <div id="botao-4" class="botao botao-simples" onclick="escreve('4')">4</div>
+            <div id="botao-5" class="botao botao-simples" onclick="escreve('5')">5</div>
+            <div id="botao-6" class="botao botao-simples" onclick="escreve('6')">6</div>
+            <div id="botao-1" class="botao botao-simples" onclick="escreve('1')">1</div>
+            <div id="botao-2" class="botao botao-simples" onclick="escreve('2')">2</div>
+            <div id="botao-3" class="botao botao-simples" onclick="escreve('3')">3</div>
+            <div id="botao-0" class="botao botao-simples" onclick="escreve('0')">0</div>
+            <div id="botao-dot" class="botao botao-simples" onclick="escreve('.')">.</div>
+            <div id="botao-clear" class="botao botao-simples" onclick="clearVisor()">C</div>
+            <div id="botao-equal" class="botao botao-equal" onclick="calculate()">=</div>
+
+        </div>
+    </form>
+    <script>
+        const visor = document.getElementById('visor');
+        function handletext(event) {
+            console.log(event.key);
+            const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/', '.', 'Enter'];
+            if (!allowedKeys.includes(event.key)) {
+                event.preventDefault();
+            } else if (event.key === 'Enter') {
+                event.preventDefault();
+                calculate();
+            }
+        }
+        function escreve(valor) {
+            if (visor.value === 'Erro') {
+                visor.value = '';
+            }
+            visor.value += valor;
+        }
+
+        function clearVisor() {
+            visor.value = '';
+        }
+
+        function calculate(e) {
+            if (e){ 
+                e.preventDefault();
+            }
+            try {
+                visor.value = eval(visor.value);
+            } catch (e) {
+                visor.value = 'Erro';
+            }
+        }
+    </script>
+</body>
+</html>
